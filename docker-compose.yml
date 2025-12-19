@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  app:
+    # 現在のディレクトリにあるDockerfileを使ってビルドする
+    build: .
+    # コンテナにわかりやすい名前をつける
+    container_name: coking-app
+    # ポートのマッピング (PCの3000番ポートをコンテナの3000番ポートにつなぐ)
+    ports:
+      - "3001:3001"
+    # ファイルの同期設定 (PCのコード変更がコンテナに即時反映されるようにする)
+    volumes:
+      - .:/app
+      # ただし、node_modulesは同期しない設定（パフォーマンスと互換性のため）
+      - /app/node_modules
