@@ -1,16 +1,41 @@
-version: '3.8'
-
 services:
+  db:
+    image: mysql:8.0
+    container_name: cooking-mama-db
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: cooking_mama
+      MYSQL_USER: cookinguser
+      MYSQL_PASSWORD: cookingpass
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
   app:
-    # 現在のディレクトリにあるDockerfileを使ってビルドする
     build: .
-    # コンテナにわかりやすい名前をつける
-    container_name: coking-app
-    # ポートのマッピング (PCの3000番ポートをコンテナの3000番ポートにつなぐ)
+    container_name: cooking-mama-app
     ports:
       - "3001:3001"
-    # ファイルの同期設定 (PCのコード変更がコンテナに即時反映されるようにする)
     volumes:
       - .:/app
-      # ただし、node_modulesは同期しない設定（パフォーマンスと互換性のため）
       - /app/node_modules
+      - /app/.next
+    environment:
+      - DATABASE_URL=mysql://root:password@db:3306/cooking_mama
+      - NODE_ENV=development
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mysql_data:

@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int               @id @default(autoincrement())
+  email            String            @unique @db.VarChar(255)
+  password         String            @db.VarChar(255)
+  createdAt        DateTime          @default(now()) @map("created_at")
+  updatedAt        DateTime          @updatedAt @map("updated_at")
+  cookingHistories CookingHistory[]
+
+  @@map("users")
+}
+
+model Recipe {
+  id             Int             @id @default(autoincrement())
+  title          String          @db.VarChar(255)
+  imageUrl       String?         @map("image_url") @db.VarChar(255)
+  description    String?         @db.Text
+  ingredients    Json
+  steps          Json
+  createdAt      DateTime        @default(now()) @map("created_at")
+  updatedAt      DateTime        @updatedAt @map("updated_at")
+  historyRecipes HistoryRecipe[]
+
+  @@map("recipes")
+}
+
+model CookingHistory {
+  id             Int             @id @default(autoincrement())
+  userId         Int             @map("user_id")
+  optimizedSteps String?         @map("optimized_steps") @db.Text
+  createdAt      DateTime        @default(now()) @map("created_at")
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  historyRecipes HistoryRecipe[]
+
+  @@index([userId])
+  @@map("cooking_histories")
+}
+
+model HistoryRecipe {
+  id        Int            @id @default(autoincrement())
+  historyId Int            @map("history_id")
+  recipeId  Int            @map("recipe_id")
+  history   CookingHistory @relation(fields: [historyId], references: [id], onDelete: Cascade)
+  recipe    Recipe         @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  @@index([historyId])
+  @@index([recipeId])
+  @@map("history_recipes")
+}

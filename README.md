@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cooking Mama App
 
-## Getting Started
+料理レシピと調理履歴を管理するアプリケーション
 
-First, run the development server:
+## 技術スタック
+
+- **フロントエンド**: Next.js 16.1.0, React 19, TypeScript
+- **バックエンド**: Next.js API Routes, NextAuth.js
+- **データベース**: MySQL 8.0, Prisma
+- **スタイリング**: Tailwind CSS 4
+- **コンテナ**: Docker & Docker Compose
+
+## 環境構築手順（Docker環境のみ）
+
+### 前提条件
+
+**Docker Desktopのみ**がインストールされていればOKです！
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+Node.jsやnpmのインストールは**不要**です。
+
+### 起動方法（2ステップ）
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 1. リポジトリをクローン
+git clone <repository-url>
+cd cooking-mama-app
+
+# 2. Dockerコンテナをビルド・起動
+docker-compose up --build
 ```
 
-Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+**初回起動は5-10分程度かかります**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+起動完了後、ブラウザで **http://localhost:3001** を開いてください。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 停止方法
 
-## Learn More
+```bash
+# Ctrl+C で停止、または
+docker-compose down
+```
 
-To learn more about Next.js, take a look at the following resources:
+## よく使うコマンド
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# コンテナを起動（2回目以降）
+docker-compose up
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# バックグラウンドで起動
+docker-compose up -d
 
-## Deploy on Vercel
+# コンテナを停止
+docker-compose down
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# データベースも削除
+docker-compose down -v
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# ログ確認
+docker-compose logs -f app
+
+# Prisma Studioを起動
+docker-compose exec app npx prisma studio
+
+# MySQLに接続
+docker-compose exec db mysql -u root -ppassword cooking_mama
+```
+
+## データベース情報
+
+外部ツールから接続する場合：
+
+- Host: `localhost`
+- Port: `3307`
+- Database: `cooking_mama`
+- User: `root`
+- Password: `password`
+
+## トラブルシューティング
+
+```bash
+# 完全にクリーンアップ
+docker-compose down -v
+docker system prune -a
+
+# 再ビルド
+docker-compose up --build
+```
+
+## 参考資料
+
+- [Next.js](https://nextjs.org/docs)
+- [NextAuth.js](https://next-auth.js.org/)
+- [Prisma](https://www.prisma.io/docs/)
+- [データベースクエリ集](./docs/database-queries.md)

@@ -4,7 +4,10 @@ FROM node:20-alpine
 # コンテナ内の作業ディレクトリを作成
 WORKDIR /app
 
-# 依存関係のファイルを先にコピーして、ビルドを高速化する
+# OpenSSLをインストール（Prisma Client用）
+RUN apk add --no-cache openssl libc6-compat
+
+# 依存関係のファイルをコピー
 COPY package*.json ./
 
 # 依存関係をインストール
@@ -13,8 +16,11 @@ RUN npm install
 # プロジェクトのファイルを全てコピー
 COPY . .
 
-# Next.jsが使うポート番号3000番を公開
-EXPOSE 3000
+# Prisma Clientを生成
+RUN npx prisma generate
 
-# 開発サーバーを起動するコマンド
+# Next.jsが使うポート番号を公開
+EXPOSE 3001
+
+# シンプルに起動するだけ
 CMD ["npm", "run", "dev"]
