@@ -10,7 +10,7 @@
     "db:start": "docker-compose up -d",
     "db:stop": "docker-compose down",
     "db:reset": "docker-compose down -v && docker-compose up --build",
-    "db:studio": "docker-compose exec app npx prisma studio",
+    "db:studio": "docker-compose exec app npx prisma studio --browser none --port 5555",
     "prisma:generate": "docker-compose exec app npx prisma generate"
   },
   "dependencies": {
