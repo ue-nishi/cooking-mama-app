@@ -1,22 +1,4 @@
+# 必須（削除すると深刻な問題）
 node_modules
 .next
 .git
-.gitignore
-README.md
-.env
-.env.local
-.vscode
-.idea
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-.DS_Store
-dist
-build
-coverage
-Thumbs.db
-docker-compose.yml
-Dockerfile
-.dockerignore
-docs/
