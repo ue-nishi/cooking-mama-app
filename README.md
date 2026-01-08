@@ -192,6 +192,38 @@ npm run prisma:generate
 npm run db:studio
 ```
 
+## セットアップ
+
+```bash
+# 1. 依存関係のインストール（ローカル開発用）
+npm install
+
+# 2. Dockerコンテナの起動
+npm run db:start
+
+# 3. Prisma Studioの起動
+npm run db:studio
+```
+
+## コマンド一覧
+
+```bash
+npm run dev           # 開発サーバー起動
+npm run build         # ビルド
+npm run db:start      # Docker起動
+npm run db:stop       # Docker停止
+npm run db:reset      # DBリセット＋再構築
+npm run db:studio     # Prisma Studio起動
+```
+
+## 環境
+
+- Node.js: 20
+- Next.js: 16.1.0
+- React: 19.2.3
+- MySQL: 8.0
+- Prisma: ^5.0.0
+
 ## 参考資料
 
 - [Next.js](https://nextjs.org/docs)
