@@ -23,4 +23,4 @@ RUN npx prisma generate
 EXPOSE 3001
 
 # シンプルに起動するだけ
-CMD ["npm", "run", "dev"]
+CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma db seed && npm run dev"]
