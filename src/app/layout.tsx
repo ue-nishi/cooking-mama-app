@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Cooking Mama App",
-  description: "料理レシピと調理履歴を管理するアプリケーション",
+  description: "複数料理の同時進行アプリケーション",
 };
 
 export default function RootLayout({
